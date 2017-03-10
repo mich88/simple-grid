@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>col count</title>
+</head>
+<body>
+	<input id="col-width" type="number" placeholder="col width">
+	<input id="gutter-width" type="number" placeholder="gutter width">
+	<input id="col-num" type="number" placeholder="col number">
+	<input type="submit">
+
+	<p>
+		
+	</p>
+
+	<script>
+		var colWidthEl = document.querySelector('#col-width');
+		var gutterWidthEl = document.querySelector('#gutter-width');
+		var colNumEl = document.querySelector('#col-num');
+		var pEl = document.querySelector('p');
+
+		var submitEl = document.querySelector('input[type="submit"]');
+
+		submitEl.addEventListener('click', (e) => {
+			e.preventDefault();
+			var colWidth = colWidthEl.value;
+			var gutterWidth = gutterWidthEl.value;
+			var colNum = colNumEl.value;
+			var pushes = [];
+
+			var widths = showColumns(colWidth, gutterWidth, colNum);
+			console.log(widths);
+
+			var widthStyles = widths.map( (width, index) => {
+				return `.col-${index + 1} {
+					width: ${width}px;
+				}
+				`;
+			});
+
+			for (var i = 0; i < colNum-1; i++) {
+				pushes[i] = (colWidth * (i+1)) + (gutterWidth * (i+1)); 
+			}
+
+			var pushesStyes = pushes.map( (push, index) => {
+				return `.col-push-${index + 1} {
+					margin-left: ${push}px;
+				}
+				`;
+			});
+
+			var gridStyles = widthStyles + pushesStyes;
+
+
+			pEl.innerText = gridStyles.toString().replace(/,/g, '');
+
+		});
+
+		function showColumns(columnWidth, gutterWidth, colNum) {
+			var columns = [];
+			var colWidth = columnWidth;
+			var gutterWidth = gutterWidth;
+			var colNum = colNum;
+
+			for (var i = 0; i < colNum; i++) {
+			  columns[i] =  (colWidth * (i+1)) + (gutterWidth * i);
+			}
+
+			return columns;
+		}
+	</script>
+</body>
+</html>
